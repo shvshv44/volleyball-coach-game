@@ -11,5 +11,10 @@ config_version=5
 [application]
 
 config/name="Volleyball Coach Game"
+run/main_scene="uid://dhg2xjfkm12ox"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+DateUtils="*res://Scripts/AutoLoaders/date_utils.gd"
