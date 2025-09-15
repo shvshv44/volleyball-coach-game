@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhg2xjfkm12ox"]
+
+[ext_resource type="Script" uid="uid://v6eihevfbgr8" path="res://Scripts/Managers/campaign_manager.gd" id="1_y6sva"]
+
+[node name="CalendarManagementScreen" type="Node2D"]
+
+[node name="CampaignManager" type="Node" parent="."]
+script = ExtResource("1_y6sva")
+metadata/_custom_type_script = "uid://v6eihevfbgr8"
