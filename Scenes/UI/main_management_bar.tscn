@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bmtih3e6qib0p"]
+
+[node name="MainManagementBar" type="Control"]
+custom_minimum_size = Vector2(1000, 50)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(1000, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="ManagementButtons" type="HBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 3.0
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.219591, 1, 0.950517, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.930921, 0.437028, 0.587084, 1)
