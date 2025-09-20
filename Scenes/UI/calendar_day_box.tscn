@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://vqmlarq1u82h"]
+[gd_scene load_steps=3 format=3 uid="uid://vqmlarq1u82h"]
 
+[ext_resource type="Script" uid="uid://dpak2er2ob1ef" path="res://Scripts/UI/calendar_day_box.gd" id="1_7ocsq"]
 [ext_resource type="Texture2D" uid="uid://d1mjkgfogjmn2" path="res://Assets/volleyball_8673941.png" id="1_asio7"]
 
 [node name="CalendarDayBox" type="Control"]
@@ -12,8 +13,9 @@ offset_right = -752.0
 offset_bottom = -248.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7ocsq")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="BorderFill" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,7 +36,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+[node name="SpaceFill" type="ColorRect" parent="MarginContainer"]
 layout_mode = 2
 color = Color(0.724643, 0.724643, 0.724643, 1)
 

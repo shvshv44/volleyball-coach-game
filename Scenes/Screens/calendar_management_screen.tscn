@@ -1,9 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhg2xjfkm12ox"]
+[gd_scene load_steps=3 format=3 uid="uid://bjxhflywhgkhn"]
 
 [ext_resource type="Script" uid="uid://v6eihevfbgr8" path="res://Scripts/Managers/campaign_manager.gd" id="1_y6sva"]
+[ext_resource type="PackedScene" uid="uid://vqmlarq1u82h" path="res://Scenes/UI/calendar_day_box.tscn" id="2_d2pa3"]
 
-[node name="CalendarManagementScreen" type="Node2D"]
+[node name="CalendarManagementScreen2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="CampaignManager" type="Node" parent="."]
 script = ExtResource("1_y6sva")
 metadata/_custom_type_script = "uid://v6eihevfbgr8"
+
+[node name="CalendarDayBox" parent="." instance=ExtResource("2_d2pa3")]
+layout_mode = 1
