@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://bmtih3e6qib0p"]
+[gd_scene load_steps=2 format=3 uid="uid://bmtih3e6qib0p"]
+
+[ext_resource type="Texture2D" uid="uid://chrfdmq08egl8" path="res://Assets/Buttons/cog_team.png" id="1_mrkdq"]
 
 [node name="MainManagementBar" type="Control"]
 custom_minimum_size = Vector2(1000, 50)
@@ -26,12 +28,54 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 3.0
 
-[node name="ColorRect" type="ColorRect" parent="HBoxContainer/ManagementButtons"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
-color = Color(0.219591, 1, 0.950517, 1)
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
 
-[node name="ColorRect2" type="ColorRect" parent="HBoxContainer"]
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer/ManagementButtons/MarginContainer"]
+layout_mode = 2
+texture_normal = ExtResource("1_mrkdq")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="PlaceHolder2" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
-color = Color(0.930921, 0.437028, 0.587084, 1)
+
+[node name="PlaceHolder3" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder4" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder5" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder6" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder7" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder8" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder9" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlaceHolder10" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CoachStats" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

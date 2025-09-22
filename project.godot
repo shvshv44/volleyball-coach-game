@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Volleyball Coach Game"
+run/main_scene="uid://bjxhflywhgkhn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,3 +21,4 @@ GameManager="*res://Scripts/Managers/game_manager.gd"
 EventManager="*res://Scripts/Managers/event_manager.gd"
 DateUtils="*res://Scripts/AutoLoaders/date_utils.gd"
 ColorUtils="*res://Scripts/AutoLoaders/color_utils.gd"
+Icons="*res://Scripts/AutoLoaders/icons.gd"
