@@ -1,81 +1,138 @@
-[gd_scene load_steps=2 format=3 uid="uid://bmtih3e6qib0p"]
+[gd_scene load_steps=5 format=3 uid="uid://bmtih3e6qib0p"]
 
 [ext_resource type="Texture2D" uid="uid://chrfdmq08egl8" path="res://Assets/Buttons/cog_team.png" id="1_mrkdq"]
+[ext_resource type="Texture2D" uid="uid://dfh1a7jw04idb" path="res://Assets/Buttons/skill_graph.png" id="2_3n5m3"]
+[ext_resource type="Texture2D" uid="uid://qe4m44ml257i" path="res://Assets/Buttons/market.png" id="3_j8ek7"]
+[ext_resource type="Texture2D" uid="uid://vekhb3ijwd20" path="res://Assets/Buttons/phone.png" id="4_jst1s"]
 
 [node name="MainManagementBar" type="Control"]
-custom_minimum_size = Vector2(1000, 50)
+custom_minimum_size = Vector2(1000, 100)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(1000, 50)
+[node name="BorderFill" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1000, 120)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
+color = Color(0.136086, 0.148144, 0.136099, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(1000, 100)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 10.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SpaceFill" type="ColorRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(1000, 100)
+layout_mode = 2
+color = Color(0.558129, 0.58678, 0.558105, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(1000, 100)
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="ManagementButtons" type="HBoxContainer" parent="HBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+[node name="ManagementButtons" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
 size_flags_stretch_ratio = 3.0
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="ManageTeamButtonContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer/ManagementButtons/MarginContainer"]
+[node name="ManageTeamButton" type="TextureButton" parent="MarginContainer/HBoxContainer/ManagementButtons/ManageTeamButtonContainer"]
 layout_mode = 2
 texture_normal = ExtResource("1_mrkdq")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="PlaceHolder2" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="SkillTreeButtonContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SkillTreeButton" type="TextureButton" parent="MarginContainer/HBoxContainer/ManagementButtons/SkillTreeButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("2_3n5m3")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MarketButtonContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MarketButton" type="TextureButton" parent="MarginContainer/HBoxContainer/ManagementButtons/MarketButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_j8ek7")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MessagesButtonContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MessagesButton" type="TextureButton" parent="MarginContainer/HBoxContainer/ManagementButtons/MessagesButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("4_jst1s")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="PlaceHolder5" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlaceHolder3" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="PlaceHolder6" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlaceHolder4" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="PlaceHolder7" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlaceHolder5" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="PlaceHolder8" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlaceHolder6" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="PlaceHolder9" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlaceHolder7" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
+[node name="PlaceHolder10" type="MarginContainer" parent="MarginContainer/HBoxContainer/ManagementButtons"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlaceHolder8" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PlaceHolder9" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PlaceHolder10" type="MarginContainer" parent="HBoxContainer/ManagementButtons"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="CoachStats" type="HBoxContainer" parent="HBoxContainer"]
+[node name="CoachStats" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
