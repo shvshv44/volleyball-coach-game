@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmtih3e6qib0p"]
+[gd_scene load_steps=9 format=3 uid="uid://bmtih3e6qib0p"]
 
+[ext_resource type="Script" uid="uid://rvd0dfdctcut" path="res://Scripts/UI/main_management_bar.gd" id="1_j8ek7"]
 [ext_resource type="Texture2D" uid="uid://chrfdmq08egl8" path="res://Assets/Buttons/cog_team.png" id="1_mrkdq"]
 [ext_resource type="Texture2D" uid="uid://dfh1a7jw04idb" path="res://Assets/Buttons/skill_graph.png" id="2_3n5m3"]
 [ext_resource type="Texture2D" uid="uid://qe4m44ml257i" path="res://Assets/Buttons/market.png" id="3_j8ek7"]
 [ext_resource type="Texture2D" uid="uid://vekhb3ijwd20" path="res://Assets/Buttons/phone.png" id="4_jst1s"]
+[ext_resource type="Texture2D" uid="uid://dnuae1ym4bojk" path="res://Assets/Buttons/coin.png" id="6_1xj0p"]
+[ext_resource type="Texture2D" uid="uid://b1ii88nsy2jqn" path="res://Assets/no_face.png" id="6_jst1s"]
+[ext_resource type="Texture2D" uid="uid://bjva7awslac2a" path="res://Assets/Buttons/Arrow-up-1-icon.png" id="7_dyv72"]
 
 [node name="MainManagementBar" type="Control"]
 custom_minimum_size = Vector2(1000, 100)
@@ -15,6 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+script = ExtResource("1_j8ek7")
 
 [node name="BorderFill" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1000, 120)
@@ -133,6 +138,75 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CoachStats" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="CoachStats" type="HSplitContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/CoachStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer/VSplitContainer/HSplitContainer"]
+layout_direction = 3
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer/VSplitContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+texture = ExtResource("6_1xj0p")
+expand_mode = 1
+
+[node name="HSplitContainer2" type="HSplitContainer" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer/VSplitContainer/HSplitContainer2"]
+layout_direction = 3
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/CoachStats/MarginContainer/VSplitContainer/HSplitContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+texture = ExtResource("7_dyv72")
+expand_mode = 1
+
+[node name="CoachFaceContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/CoachStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CoachFace" type="TextureRect" parent="MarginContainer/HBoxContainer/CoachStats/CoachFaceContainer"]
+layout_mode = 2
+texture = ExtResource("6_jst1s")
+expand_mode = 1

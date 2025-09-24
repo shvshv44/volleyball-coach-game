@@ -5,7 +5,7 @@ const BUTTONS_MANAGE_SKILLS: Texture2D = preload("res://Assets/Buttons/skill_gra
 const BUTTONS_MARKET: Texture2D = preload("res://Assets/Buttons/market.png")
 const BUTTONS_MESSAGES: Texture2D = preload("res://Assets/Buttons/phone.png")
 
-const ICONS_MONEY: Texture2D = preload("res://Assets/Buttons/png-clipart-coins-coins.png")
+const ICONS_MONEY: Texture2D = preload("res://Assets/Buttons/coin.png")
 const ICONS_CEP: Texture2D = preload("res://Assets/Buttons/Arrow-up-1-icon.png")
 
 const ACTIVITY_TRAINING: Texture2D = preload("res://Assets/Activities/training.png")
