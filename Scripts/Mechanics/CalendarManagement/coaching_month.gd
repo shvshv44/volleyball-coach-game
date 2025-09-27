@@ -18,7 +18,7 @@ func get_day(day_num: int) -> CoachingDay:
 	return null  # just for type safety
 	
 func to_pretty_print() -> String:
-	return "%s %d" % [DateUtils.month_name_by_number(month_num), year_num]
+	return "%s  %d" % [DateUtils.month_name_by_number(month_num), year_num]
 	
 func _init_days(year: int, month: int) -> void:
 	days = []

@@ -25,7 +25,7 @@ func init_new_season(start_year: int) -> void:
 	current_season = CoachingSeason.new(start_year)
 	
 func is_season_active() -> bool:
-	return current_season != null
+	return current_season != null && current_day != null
 
 func get_current_month() -> CoachingMonth:
 	_validate_campaign_active("Campaign must be active to get a month!")
@@ -35,9 +35,9 @@ func get_current_day() -> CoachingDay:
 	_validate_campaign_active("Campaign must be active to get a day!")
 	return CampaignManager.campaign_data.current_season.get_day(current_day)
 	
-func get_month_by_num(month_year: int, month_num: int) -> CoachingMonth:
+func get_shown_month() -> CoachingMonth:
 	_validate_campaign_active("Campaign must be active to get a month!")
-	return CampaignManager.campaign_data.current_season.get_month_by_num(month_year, month_num)
+	return CampaignManager.campaign_data.current_season.get_month_by_num(current_shown_year_num, current_shown_month_num)
 	
 func _validate_campaign_active(message: String) -> void:
 	if not is_season_active():

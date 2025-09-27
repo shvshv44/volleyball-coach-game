@@ -46,3 +46,9 @@ func get_day(_calendaric_day: CalendaricDay) -> CoachingDay:
 	push_error("CoachingDay not found for date: %d/%d/%d" % [_calendaric_day.year, _calendaric_day.month, _calendaric_day.day])
 	assert(false)
 	return null
+	
+func get_last_month() -> CoachingMonth:
+	return months[len(months) - 1]
+	
+func get_first_month() -> CoachingMonth:
+	return months[0]
