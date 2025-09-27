@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bjxhflywhgkhn"]
+[gd_scene load_steps=7 format=3 uid="uid://bjxhflywhgkhn"]
 
 [ext_resource type="Script" uid="uid://c7maigknoyiwa" path="res://Scripts/UI/calendar_management_screen.gd" id="1_aifyj"]
 [ext_resource type="PackedScene" uid="uid://bmtih3e6qib0p" path="res://Scenes/UI/main_management_bar.tscn" id="1_c5tpu"]
-[ext_resource type="Script" uid="uid://v6eihevfbgr8" path="res://Scripts/Managers/campaign_manager.gd" id="1_y6sva"]
 [ext_resource type="Texture2D" uid="uid://c8ssxv7mk2bux" path="res://Assets/Buttons/next.png" id="3_c5tpu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5tpu"]
@@ -35,10 +34,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_aifyj")
-
-[node name="CampaignManager" type="Node" parent="."]
-script = ExtResource("1_y6sva")
-metadata/_custom_type_script = "uid://v6eihevfbgr8"
 
 [node name="UI" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -112,21 +107,29 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 7.0
 theme_override_constants/separation = 0
 
-[node name="CalendarContainer" type="PanelContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer"]
+[node name="CalendarPanel" type="PanelContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_t1uvs")
 
-[node name="CalendarContainer" type="VBoxContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/CalendarContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/CalendarPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="CalendarContainer" type="GridContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/CalendarPanel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+columns = 7
 
-[node name="DayDetailsContainer" type="PanelContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer"]
+[node name="DayDetailsPanel" type="PanelContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_aifyj")
 
-[node name="DayDetailsContainer" type="VBoxContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsContainer"]
+[node name="DayDetailsContainer" type="VBoxContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
