@@ -17,7 +17,7 @@ func show_next_month():
 	if not (last_month.month_num ==  campaign_data.current_shown_month_num and last_month.year_num == campaign_data.current_shown_year_num):
 		var new_month = campaign_data.current_shown_month_num + 1
 		var new_year = campaign_data.current_shown_year_num
-		if campaign_data.current_shown_month_num > 12:
+		if new_month > 12:
 			new_year = new_year + 1
 			new_month = 1
 		campaign_data.current_shown_month_num = new_month
@@ -28,7 +28,7 @@ func show_previous_month():
 	if not (first_month.month_num ==  campaign_data.current_shown_month_num and first_month.year_num == campaign_data.current_shown_year_num):
 		var new_month = campaign_data.current_shown_month_num - 1
 		var new_year = campaign_data.current_shown_year_num
-		if campaign_data.current_shown_month_num < 1:
+		if new_month < 1:
 			new_year = new_year - 1
 			new_month = 12
 		campaign_data.current_shown_month_num = new_month
