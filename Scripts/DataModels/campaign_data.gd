@@ -6,6 +6,7 @@ class_name CampaignData
 @export var current_cep: float = 0
 var current_season: CoachingSeason = null
 var current_day: CalendaricDay = null
+var is_after_main_activity: bool = false
 
 ## This variables affects which month the player looks on.
 ## After he go to other page and then come back to the calendar page he will.
@@ -20,6 +21,7 @@ func _init():
 	current_day = current_season.months[0].days[0].day
 	current_shown_month_num = current_season.months[0].month_num
 	current_shown_year_num = current_season.start_year
+	is_after_main_activity = false
 
 func init_new_season(start_year: int) -> void:
 	current_season = CoachingSeason.new(start_year)
