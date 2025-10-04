@@ -54,4 +54,9 @@ func activate_main_activity() -> void:
 func finish_day() -> void:
 	campaign_data.is_after_main_activity = true
 	
+func select_day(year_num: int, month_num: int, day_num: int) -> void:
+	var new_selected_day = CalendaricDay.new(year_num, month_num, day_num)
+	campaign_data.selected_day = new_selected_day
+	EventManager.player_selected_day.emit(new_selected_day)
+	
 	

@@ -56,3 +56,7 @@ func get_first_month() -> CoachingMonth:
 func get_last_day() -> CoachingDay:
 	var last_month = get_last_month()
 	return last_month.days[len(last_month.days) - 1]
+	
+func get_first_day() -> CoachingDay:
+	var first_month = get_first_month()
+	return first_month.days[0]

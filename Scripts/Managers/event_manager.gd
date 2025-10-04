@@ -5,3 +5,4 @@ extends Node
 signal next_month_on_calendar_displayed()
 signal prev_month_on_calendar_displayed()
 signal next_day_started(event: NextDayStartedEvent)
+signal player_selected_day(event: PlayerSelectedDayEvent)

@@ -26,7 +26,7 @@ func _initialize_calandar_grid() -> void:
 	var current_month = CampaignManager.campaign_data.get_current_month()
 	set_calendar_of_month(current_month)
 	refresh_shown_month()
-		
+
 func set_calendar_of_month(month: CoachingMonth) -> void:
 	for child in calendar_grid.get_children():
 		child.queue_free()
@@ -36,10 +36,11 @@ func set_calendar_of_month(month: CoachingMonth) -> void:
 		day_box.set_day_num(day.day.day)
 		day_box.set_activity(day.main_activity.activity_type)
 		calendar_grid.add_child(day_box)
-	refresh_current_day()
+	refresh_day_data()
 
-func refresh_current_day() -> void:
+func refresh_day_data() -> void:
 	var current_day = CampaignManager.campaign_data.current_day
+	var selected_day = CampaignManager.campaign_data.selected_day
 	var shown_month = CampaignManager.campaign_data.current_shown_month_num
 	var shown_year = CampaignManager.campaign_data.current_shown_year_num
 	
@@ -47,9 +48,13 @@ func refresh_current_day() -> void:
 		if child is CalendarDayBox:
 			var day_box = child as CalendarDayBox
 			day_box.set_is_current_day(false)
+			day_box.set_is_selected(false)
 			if shown_year == current_day.year and shown_month == current_day.month:
 				if day_box.day_num == current_day.day:
 					day_box.set_is_current_day(true)
+			if shown_year == selected_day.year and shown_month == selected_day.month:
+				if day_box.day_num == selected_day.day:
+					day_box.set_is_selected(true)
 
 func refresh_shown_month() -> void:
 	var shown_year_num = CampaignManager.campaign_data.current_shown_year_num
@@ -72,6 +77,7 @@ func _connect_events() -> void:
 	prev_day_btn.pressed.connect(_on_show_prev_month_button_pressed)
 	EventManager.next_month_on_calendar_displayed.connect(_on_show_next_month)
 	EventManager.prev_month_on_calendar_displayed.connect(_on_show_prev_month)
+	EventManager.player_selected_day.connect(_on_player_selected_day)
 	
 func _on_show_next_month_button_pressed() -> void:
 	EventManager.next_month_on_calendar_displayed.emit()
@@ -121,3 +127,6 @@ func _styling_day_details_panel() -> void:
 	
 func _get_current_season() -> CoachingSeason:
 	return CampaignManager.get_current_season_if_active()
+	
+func _on_player_selected_day(event) -> void:
+	refresh_day_data()

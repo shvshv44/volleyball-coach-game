@@ -6,6 +6,7 @@ class_name CampaignData
 @export var current_cep: float = 0
 var current_season: CoachingSeason = null
 var current_day: CalendaricDay = null
+var selected_day: CalendaricDay = null
 var is_after_main_activity: bool = false
 
 ## This variables affects which month the player looks on.
@@ -18,8 +19,9 @@ func _init():
 	current_money = 0
 	current_cep = 0
 	init_new_season(2000)
-	current_day = current_season.months[0].days[0].day
-	current_shown_month_num = current_season.months[0].month_num
+	current_day = current_season.get_first_day().day
+	selected_day = current_season.get_first_day().day
+	current_shown_month_num = current_season.get_first_month().month_num
 	current_shown_year_num = current_season.start_year
 	is_after_main_activity = false
 
@@ -36,6 +38,10 @@ func get_current_month() -> CoachingMonth:
 func get_current_day() -> CoachingDay:
 	_validate_campaign_active("Campaign must be active to get a day!")
 	return CampaignManager.campaign_data.current_season.get_day(current_day)
+
+func get_selected_day() -> CoachingDay:
+	_validate_campaign_active("Campaign must be active to get a day!")
+	return CampaignManager.campaign_data.current_season.get_day(selected_day)
 	
 func get_shown_month() -> CoachingMonth:
 	_validate_campaign_active("Campaign must be active to get a month!")
