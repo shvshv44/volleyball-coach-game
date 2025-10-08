@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bjxhflywhgkhn"]
+[gd_scene load_steps=8 format=3 uid="uid://bjxhflywhgkhn"]
 
 [ext_resource type="Script" uid="uid://c7maigknoyiwa" path="res://Scripts/UI/calendar_management_screen.gd" id="1_aifyj"]
 [ext_resource type="PackedScene" uid="uid://bmtih3e6qib0p" path="res://Scenes/UI/main_management_bar.tscn" id="1_c5tpu"]
@@ -25,6 +25,13 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.154876, 0.154876, 0.154876, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0c548"]
+bg_color = Color(0.830335, 0.830335, 0.830335, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="CalendarManagementScreen" type="Control"]
 layout_mode = 3
@@ -133,3 +140,53 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_aifyj")
 [node name="DayDetailsContainer" type="VBoxContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="DetailsContainer" type="MarginContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="DetailsPanel" type="Panel" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/DetailsContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0c548")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/DetailsContainer/DetailsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="DayDetailsLabel" type="RichTextLabel" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/DetailsContainer/DetailsPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="ButtonMarginContainer" type="MarginContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ManageBtn" type="Button" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "btn"
+
+[node name="ProceedBtn" type="Button" parent="UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "btn"

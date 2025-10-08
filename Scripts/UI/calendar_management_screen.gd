@@ -14,12 +14,17 @@ class_name CalendarManagementScreen
 # Day Details
 @onready var day_details_panel: PanelContainer = $UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel
 
+# Buttons
+@onready var proceed_btn: Button = $UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer/ButtonsContainer/ProceedBtn
+@onready var manage_btn: Button = $UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer/ButtonsContainer/ManageBtn
+
 var calendar_day_scene = preload("res://Scenes/UI/calendar_day_box.tscn")
 
 func _ready():
 	_styling_components()
 	_connect_events()
 	_initialize_calandar_grid()
+	_init_buttons()
 	
 func _initialize_calandar_grid() -> void:
 	calendar_grid.columns = 7
@@ -66,6 +71,35 @@ func refresh_shown_month() -> void:
 	current_date_label.text = shown_month.to_pretty_print()
 	next_day_btn.visible = not (last_month.year_num == shown_year_num and last_month.month_num == shown_month_num)
 	prev_day_btn.visible = not (first_month.year_num == shown_year_num and first_month.month_num == shown_month_num)
+
+func refresh_buttons() -> void:
+	_decide_proceed_button_behaviour()
+	_decide_manage_button_behaviour()
+		
+func select_current_day() -> void:
+	CampaignManager.select_calendaric_day(CampaignManager.campaign_data.current_day)
+	
+func _decide_proceed_button_behaviour() -> void:
+	var _current_day: CalendaricDay = CampaignManager.campaign_data.current_day
+	var _selected_day: CalendaricDay = CampaignManager.campaign_data.selected_day
+	if _current_day.equals(_selected_day):
+		if CampaignManager.campaign_data.is_after_main_activity:
+			proceed_btn.text = "Next Day"
+			proceed_btn.pressed.connect(CampaignManager.next_day)
+		else:
+			proceed_btn.text = "Activate Activity" # Change per activity
+			proceed_btn.pressed.connect(CampaignManager.activate_main_activity)
+	else:
+		proceed_btn.text = "Current Day"
+		proceed_btn.pressed.connect(select_current_day)
+		
+func _decide_manage_button_behaviour() -> void:
+	var _current_day: CalendaricDay = CampaignManager.campaign_data.current_day
+	var _selected_day: CalendaricDay = CampaignManager.campaign_data.selected_day	
+	manage_btn.text = "Manage"
+	# TOIDO: implement button management
+	manage_btn.pressed.connect(func(): print("TODO: Manage!!!"))
+	manage_btn.disabled = _selected_day.is_before(_current_day) or (_selected_day.equals(_current_day) and CampaignManager.campaign_data.is_after_main_activity)
 
 func _styling_components() -> void:
 	_styling_date_picker_panel()
@@ -129,4 +163,28 @@ func _get_current_season() -> CoachingSeason:
 	return CampaignManager.get_current_season_if_active()
 	
 func _on_player_selected_day(event) -> void:
-	refresh_day_data()
+	refresh_day_data()	
+
+func _init_buttons() -> void:
+	_style_button(proceed_btn)
+	_style_button(manage_btn)
+	refresh_buttons()
+	
+
+func _style_button(_button: Button) -> void:
+	var style_noraml = StyleBoxFlat.new()
+	var style_disabled = StyleBoxFlat.new()
+	
+	style_noraml.bg_color = ColorUtils.BRIGHT_UI_PICK_COLOR
+	style_noraml.border_color = ColorUtils.MEDIUM_UI_PICK_COLOR
+	style_noraml.set_border_width_all(3)
+	
+	style_disabled.bg_color = ColorUtils.MEDIUM_UI_PICK_COLOR
+	style_disabled.border_color = ColorUtils.DARK_UI_PICK_COLOR
+	style_disabled.set_border_width_all(3)
+
+	_button.add_theme_stylebox_override("normal", style_noraml)
+	_button.add_theme_stylebox_override("hover", style_noraml.duplicate())
+	_button.add_theme_stylebox_override("pressed", style_noraml.duplicate())
+	_button.add_theme_stylebox_override("disabled", style_disabled)
+	_button.add_theme_color_override("font_color", Color.BLACK)
