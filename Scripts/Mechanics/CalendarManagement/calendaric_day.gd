@@ -1,4 +1,3 @@
-# Day.gd
 extends Resource
 class_name CalendaricDay
 

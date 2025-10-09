@@ -1,0 +1,227 @@
+extends Control
+class_name CalendarManagementScreen
+
+# Date Picker
+@onready var date_picker_panel: Panel = $UI/VBoxContainer/ScreenContainer/DatePickerPanel
+@onready var current_date_label: Label = $UI/VBoxContainer/ScreenContainer/DatePickerPanel/DatePickerContainer/CenterContainer/CurrentDate
+@onready var prev_day_btn: TextureButton = $UI/VBoxContainer/ScreenContainer/DatePickerPanel/DatePickerContainer/PrevMonthBtn
+@onready var next_day_btn: TextureButton = $UI/VBoxContainer/ScreenContainer/DatePickerPanel/DatePickerContainer/NextMonthBtn
+
+# Calendar
+@onready var calendar_panel: PanelContainer = $UI/VBoxContainer/ScreenContainer/DetailsContainer/CalendarPanel
+@onready var calendar_grid: GridContainer = $UI/VBoxContainer/ScreenContainer/DetailsContainer/CalendarPanel/MarginContainer/CalendarContainer
+
+# Day Details
+@onready var day_details_panel: PanelContainer = $UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel
+
+# Buttons
+@onready var proceed_btn: Button = $UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer/ButtonsContainer/ProceedBtn
+@onready var manage_btn: Button = $UI/VBoxContainer/ScreenContainer/DetailsContainer/DayDetailsPanel/DayDetailsContainer/ButtonMarginContainer/ButtonsContainer/ManageBtn
+
+var calendar_day_scene = preload("res://Scenes/UI/calendar_day_box.tscn")
+
+func _ready() -> void:
+	_styling_components()
+	_connect_events()
+	_initialize_calandar_grid()
+	_init_buttons()
+
+func _exit_tree() -> void:
+	_disconnect_events()
+	
+func _initialize_calandar_grid() -> void:
+	calendar_grid.columns = 7
+	var current_month = CampaignManager.campaign_data.get_current_month()
+	set_calendar_of_month(current_month)
+	refresh_shown_month()
+
+func set_calendar_of_month(month: CoachingMonth) -> void:
+	for child in calendar_grid.get_children():
+		child.queue_free()
+		
+	for day in month.days:
+		var day_box: CalendarDayBox = calendar_day_scene.instantiate()
+		day_box.set_day_num(day.day.day)
+		day_box.set_activity(day.main_activity.activity_type)
+		calendar_grid.add_child(day_box)
+	refresh_day_data()
+
+func refresh_day_data() -> void:
+	var current_day = CampaignManager.campaign_data.current_day
+	var selected_day = CampaignManager.campaign_data.selected_day
+	var shown_month = CampaignManager.campaign_data.current_shown_month_num
+	var shown_year = CampaignManager.campaign_data.current_shown_year_num
+	
+	for child in calendar_grid.get_children():
+		if child is CalendarDayBox:
+			var day_box = child as CalendarDayBox
+			day_box.set_is_current_day(false)
+			day_box.set_is_selected(false)
+			if shown_year == current_day.year and shown_month == current_day.month:
+				if day_box.day_num == current_day.day:
+					day_box.set_is_current_day(true)
+			if shown_year == selected_day.year and shown_month == selected_day.month:
+				if day_box.day_num == selected_day.day:
+					day_box.set_is_selected(true)
+
+func refresh_shown_month() -> void:
+	var shown_year_num = CampaignManager.campaign_data.current_shown_year_num
+	var shown_month_num = CampaignManager.campaign_data.current_shown_month_num
+	var shown_month: CoachingMonth = _get_current_season().get_month_by_num(shown_year_num, shown_month_num)
+	var first_month = _get_current_season().get_first_month()
+	var last_month = _get_current_season().get_last_month()
+	
+	current_date_label.text = shown_month.to_pretty_print()
+	next_day_btn.visible = not (last_month.year_num == shown_year_num and last_month.month_num == shown_month_num)
+	prev_day_btn.visible = not (first_month.year_num == shown_year_num and first_month.month_num == shown_month_num)
+
+func refresh_buttons() -> void:
+	_decide_proceed_button_behaviour()
+	_decide_manage_button_behaviour()
+
+func select_and_focus_current_day() -> void:
+	CampaignManager.show_calendaric_day(CampaignManager.campaign_data.current_day)
+	CampaignManager.select_calendaric_day(CampaignManager.campaign_data.current_day)
+	
+func _decide_proceed_button_behaviour() -> void:
+	UIUtils.reset_button_connections(proceed_btn)
+	var _current_day: CalendaricDay = CampaignManager.campaign_data.current_day
+	var _selected_day: CalendaricDay = CampaignManager.campaign_data.selected_day
+	if _current_day.equals(_selected_day):
+		if CampaignManager.campaign_data.is_after_main_activity:
+			proceed_btn.text = "Next Day"
+			proceed_btn.pressed.connect(CampaignManager.next_day)
+		else:
+			proceed_btn.text = "Activate Activity" # Change per activity
+			proceed_btn.pressed.connect(CampaignManager.activate_main_activity)
+	else:
+		proceed_btn.text = "Current Day"
+		proceed_btn.pressed.connect(select_and_focus_current_day)
+		
+func _decide_manage_button_behaviour() -> void:
+	UIUtils.reset_button_connections(manage_btn)
+	var _current_day: CalendaricDay = CampaignManager.campaign_data.current_day
+	var _selected_day: CalendaricDay = CampaignManager.campaign_data.selected_day	
+	manage_btn.text = "Manage"
+	# TOIDO: implement button management
+	manage_btn.pressed.connect(func(): print("TODO: Manage!!!"))
+	manage_btn.disabled = _selected_day.is_before(_current_day) or (_selected_day.equals(_current_day) and CampaignManager.campaign_data.is_after_main_activity)
+
+func _styling_components() -> void:
+	_styling_date_picker_panel()
+	_styling_calendar_panel()
+	_styling_day_details_panel()
+	
+func _connect_events() -> void:
+	next_day_btn.pressed.connect(_on_show_next_month_button_pressed)
+	prev_day_btn.pressed.connect(_on_show_prev_month_button_pressed)
+	EventManager.next_month_on_calendar_displayed.connect(_on_show_next_month)
+	EventManager.prev_month_on_calendar_displayed.connect(_on_show_prev_month)
+	EventManager.player_selected_day.connect(_on_player_selected_day)
+	EventManager.main_activity_finished.connect(_on_main_activity_finished)
+	EventManager.next_day_started.connect(_on_next_day_started)
+	
+func _disconnect_events() -> void:
+	if next_day_btn.pressed.is_connected(_on_show_next_month_button_pressed):
+		next_day_btn.pressed.disconnect(_on_show_next_month_button_pressed)
+	if prev_day_btn.pressed.is_connected(_on_show_prev_month_button_pressed):
+		prev_day_btn.pressed.disconnect(_on_show_prev_month_button_pressed)
+	if EventManager.next_month_on_calendar_displayed.is_connected(_on_show_next_month):
+		EventManager.next_month_on_calendar_displayed.disconnect(_on_show_next_month)
+	if EventManager.prev_month_on_calendar_displayed.is_connected(_on_show_prev_month):
+		EventManager.prev_month_on_calendar_displayed.disconnect(_on_show_prev_month)
+	if EventManager.player_selected_day.is_connected(_on_player_selected_day):
+		EventManager.player_selected_day.disconnect(_on_player_selected_day)
+	if EventManager.main_activity_finished.is_connected(_on_main_activity_finished):
+		EventManager.main_activity_finished.disconnect(_on_main_activity_finished)
+	if EventManager.next_day_started.is_connected(_on_next_day_started):
+		EventManager.next_day_started.disconnect(_on_next_day_started)
+	
+func _on_show_next_month_button_pressed() -> void:
+	EventManager.next_month_on_calendar_displayed.emit()
+
+func _on_show_prev_month_button_pressed() -> void:
+	EventManager.prev_month_on_calendar_displayed.emit()
+	
+func _on_show_next_month() -> void:
+	CampaignManager.show_next_month()
+	refresh_shown_month()
+	set_calendar_of_month(CampaignManager.campaign_data.get_shown_month())
+	
+func _on_show_prev_month() -> void:
+	CampaignManager.show_previous_month()
+	refresh_shown_month()
+	set_calendar_of_month(CampaignManager.campaign_data.get_shown_month())
+
+func _styling_date_picker_panel() -> void:
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = ColorUtils.MEDIUM_UI_MAIN_COLOR
+	stylebox.border_color = ColorUtils.DARK_UI_MAIN_COLOR
+	stylebox.border_width_left = 10
+	stylebox.border_width_right = 10
+	stylebox.border_width_top = 5
+	stylebox.border_width_bottom = 10
+	date_picker_panel.add_theme_stylebox_override("panel", stylebox)
+
+func _styling_calendar_panel() -> void:
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = ColorUtils.MEDIUM_UI_MAIN_COLOR
+	stylebox.border_color = ColorUtils.DARK_UI_MAIN_COLOR
+	stylebox.border_width_left = 10
+	stylebox.border_width_right = 5
+	stylebox.border_width_top = 5
+	stylebox.border_width_bottom = 10
+	calendar_panel.add_theme_stylebox_override("panel", stylebox)
+	
+func _styling_day_details_panel() -> void:
+	var stylebox = StyleBoxFlat.new()
+	stylebox.bg_color = ColorUtils.MEDIUM_UI_MAIN_COLOR
+	stylebox.border_color = ColorUtils.DARK_UI_MAIN_COLOR
+	stylebox.border_width_left = 5
+	stylebox.border_width_right = 10
+	stylebox.border_width_top = 5
+	stylebox.border_width_bottom = 10
+	day_details_panel.add_theme_stylebox_override("panel", stylebox)
+	
+func _on_player_selected_day(event: PlayerSelectedDayEvent) -> void:
+	_refresh_all()
+	
+func _on_main_activity_finished() -> void:
+	_refresh_all()
+	
+func _on_next_day_started(event: NextDayStartedEvent) -> void:
+	select_and_focus_current_day()
+	set_calendar_of_month(CampaignManager.campaign_data.get_current_month())
+	_refresh_all()
+
+func _get_current_season() -> CoachingSeason:
+	return CampaignManager.get_current_season_if_active()
+	
+func _refresh_all() -> void:
+	refresh_day_data()
+	refresh_shown_month()
+	refresh_buttons()
+
+func _init_buttons() -> void:
+	_style_button(proceed_btn)
+	_style_button(manage_btn)
+	refresh_buttons()
+	
+
+func _style_button(_button: Button) -> void:
+	var style_noraml = StyleBoxFlat.new()
+	var style_disabled = StyleBoxFlat.new()
+	
+	style_noraml.bg_color = ColorUtils.BRIGHT_UI_PICK_COLOR
+	style_noraml.border_color = ColorUtils.MEDIUM_UI_PICK_COLOR
+	style_noraml.set_border_width_all(3)
+	
+	style_disabled.bg_color = ColorUtils.MEDIUM_UI_PICK_COLOR
+	style_disabled.border_color = ColorUtils.DARK_UI_PICK_COLOR
+	style_disabled.set_border_width_all(3)
+
+	_button.add_theme_stylebox_override("normal", style_noraml)
+	_button.add_theme_stylebox_override("hover", style_noraml.duplicate())
+	_button.add_theme_stylebox_override("pressed", style_noraml.duplicate())
+	_button.add_theme_stylebox_override("disabled", style_disabled)
+	_button.add_theme_color_override("font_color", Color.BLACK)
