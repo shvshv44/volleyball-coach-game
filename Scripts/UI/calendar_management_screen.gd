@@ -20,7 +20,7 @@ class_name CalendarManagementScreen
 
 var calendar_day_scene = preload("res://Scenes/UI/calendar_day_box.tscn")
 
-func _ready():
+func _ready() -> void:
 	_styling_components()
 	_connect_events()
 	_initialize_calandar_grid()
@@ -78,8 +78,9 @@ func refresh_shown_month() -> void:
 func refresh_buttons() -> void:
 	_decide_proceed_button_behaviour()
 	_decide_manage_button_behaviour()
-		
-func select_current_day() -> void:
+
+func select_and_focus_current_day() -> void:
+	CampaignManager.show_calendaric_day(CampaignManager.campaign_data.current_day)
 	CampaignManager.select_calendaric_day(CampaignManager.campaign_data.current_day)
 	
 func _decide_proceed_button_behaviour() -> void:
@@ -95,7 +96,7 @@ func _decide_proceed_button_behaviour() -> void:
 			proceed_btn.pressed.connect(CampaignManager.activate_main_activity)
 	else:
 		proceed_btn.text = "Current Day"
-		proceed_btn.pressed.connect(select_current_day)
+		proceed_btn.pressed.connect(select_and_focus_current_day)
 		
 func _decide_manage_button_behaviour() -> void:
 	UIUtils.reset_button_connections(manage_btn)
@@ -117,6 +118,8 @@ func _connect_events() -> void:
 	EventManager.next_month_on_calendar_displayed.connect(_on_show_next_month)
 	EventManager.prev_month_on_calendar_displayed.connect(_on_show_prev_month)
 	EventManager.player_selected_day.connect(_on_player_selected_day)
+	EventManager.main_activity_finished.connect(_on_main_activity_finished)
+	EventManager.next_day_started.connect(_on_next_day_started)
 	
 func _disconnect_events() -> void:
 	if next_day_btn.pressed.is_connected(_on_show_next_month_button_pressed):
@@ -129,6 +132,10 @@ func _disconnect_events() -> void:
 		EventManager.prev_month_on_calendar_displayed.disconnect(_on_show_prev_month)
 	if EventManager.player_selected_day.is_connected(_on_player_selected_day):
 		EventManager.player_selected_day.disconnect(_on_player_selected_day)
+	if EventManager.main_activity_finished.is_connected(_on_main_activity_finished):
+		EventManager.main_activity_finished.disconnect(_on_main_activity_finished)
+	if EventManager.next_day_started.is_connected(_on_next_day_started):
+		EventManager.next_day_started.disconnect(_on_next_day_started)
 	
 func _on_show_next_month_button_pressed() -> void:
 	EventManager.next_month_on_calendar_displayed.emit()
@@ -176,11 +183,23 @@ func _styling_day_details_panel() -> void:
 	stylebox.border_width_bottom = 10
 	day_details_panel.add_theme_stylebox_override("panel", stylebox)
 	
+func _on_player_selected_day(event: PlayerSelectedDayEvent) -> void:
+	_refresh_all()
+	
+func _on_main_activity_finished() -> void:
+	_refresh_all()
+	
+func _on_next_day_started(event: NextDayStartedEvent) -> void:
+	select_and_focus_current_day()
+	set_calendar_of_month(CampaignManager.campaign_data.get_current_month())
+	_refresh_all()
+
 func _get_current_season() -> CoachingSeason:
 	return CampaignManager.get_current_season_if_active()
 	
-func _on_player_selected_day(event) -> void:
+func _refresh_all() -> void:
 	refresh_day_data()
+	refresh_shown_month()
 	refresh_buttons()
 
 func _init_buttons() -> void:

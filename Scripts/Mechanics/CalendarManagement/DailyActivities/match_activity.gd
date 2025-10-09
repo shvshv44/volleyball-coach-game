@@ -7,3 +7,4 @@ func _init() -> void:
 func take_affect() -> void:
 	# TODO: do actual stuff here like move to the match scene.
 	print("Match Time!")
+	CampaignManager.finish_day()

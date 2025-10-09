@@ -41,6 +41,7 @@ func next_day() -> void:
 	if get_current_season_if_active().get_last_day().day.is_after(next_day):
 		var new_day_event = NextDayStartedEvent.new(campaign_data.current_day, next_day)
 		campaign_data.current_day = next_day
+		campaign_data.is_after_main_activity = false
 		EventManager.next_day_started.emit(new_day_event)
 	
 # Should be called when the player starts the main acitvity 
@@ -53,13 +54,18 @@ func activate_main_activity() -> void:
 # Should be called after the main activity is finished or activity is BREAK
 func finish_day() -> void:
 	campaign_data.is_after_main_activity = true
+	EventManager.main_activity_finished.emit()
 	
 func select_day(_year_num: int, _month_num: int, _day_num: int) -> void:
 	var _new_selected_day = CalendaricDay.new(_year_num, _month_num, _day_num)
 	campaign_data.selected_day = _new_selected_day
-	EventManager.player_selected_day.emit(_new_selected_day)
+	EventManager.player_selected_day.emit(PlayerSelectedDayEvent.new(_new_selected_day))
 	
 func select_calendaric_day(_selected: CalendaricDay) -> void:
 	self.select_day(_selected.year, _selected.month, _selected.day)
+
+func show_calendaric_day(_selected: CalendaricDay) -> void:
+	campaign_data.current_shown_month_num = _selected.month
+	campaign_data.current_shown_year_num = _selected.year
 	
 	

@@ -7,3 +7,4 @@ func _init() -> void:
 func take_affect() -> void:
 	# TODO: Need to implement - can be many types (need to be generic) - see the docs for more info.
 	print("Special Occasion!")
+	CampaignManager.finish_day()
