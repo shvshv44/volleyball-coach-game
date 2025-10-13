@@ -47,10 +47,10 @@ func set_calendar_of_month(month: CoachingMonth) -> void:
 	refresh_day_data()
 
 func refresh_day_data() -> void:
-	var current_day = CampaignManager.campaign_data.current_day
-	var selected_day = CampaignManager.campaign_data.selected_day
-	var shown_month = CampaignManager.campaign_data.current_shown_month_num
-	var shown_year = CampaignManager.campaign_data.current_shown_year_num
+	var current_day = CampaignManager.campaign_data.calendar_data.current_day
+	var selected_day = CampaignManager.campaign_data.calendar_data.selected_day
+	var shown_month = CampaignManager.campaign_data.calendar_data.current_shown_month_num
+	var shown_year = CampaignManager.campaign_data.calendar_data.current_shown_year_num
 	
 	for child in calendar_grid.get_children():
 		if child is CalendarDayBox:
@@ -65,30 +65,30 @@ func refresh_day_data() -> void:
 					day_box.set_is_selected(true)
 
 func refresh_shown_month() -> void:
-	var shown_year_num = CampaignManager.campaign_data.current_shown_year_num
-	var shown_month_num = CampaignManager.campaign_data.current_shown_month_num
-	var shown_month: CoachingMonth = _get_current_season().get_month_by_num(shown_year_num, shown_month_num)
+	var shown_year_num = CampaignManager.campaign_data.calendar_data.current_shown_year_num
+	var shown_month: CoachingMonth = CampaignManager.campaign_data.get_shown_month()
 	var first_month = _get_current_season().get_first_month()
 	var last_month = _get_current_season().get_last_month()
 	
 	current_date_label.text = shown_month.to_pretty_print()
-	next_day_btn.visible = not (last_month.year_num == shown_year_num and last_month.month_num == shown_month_num)
-	prev_day_btn.visible = not (first_month.year_num == shown_year_num and first_month.month_num == shown_month_num)
+	next_day_btn.visible = not (last_month.year_num == shown_month.year_num and last_month.month_num == shown_month.month_num)
+	prev_day_btn.visible = not (first_month.year_num == shown_month.year_num and first_month.month_num == shown_month.month_num)
 
 func refresh_buttons() -> void:
 	_decide_proceed_button_behaviour()
 	_decide_manage_button_behaviour()
 
 func select_and_focus_current_day() -> void:
-	CampaignManager.show_calendaric_day(CampaignManager.campaign_data.current_day)
-	CampaignManager.select_calendaric_day(CampaignManager.campaign_data.current_day)
+	var current_calendaric_day = CampaignManager.campaign_data.get_current_day().day
+	CampaignManager.show_calendaric_day(current_calendaric_day)
+	CampaignManager.select_calendaric_day(current_calendaric_day)
 	
 func _decide_proceed_button_behaviour() -> void:
 	UIUtils.reset_button_connections(proceed_btn)
-	var _current_day: CalendaricDay = CampaignManager.campaign_data.current_day
-	var _selected_day: CalendaricDay = CampaignManager.campaign_data.selected_day
+	var _current_day: CalendaricDay = CampaignManager.campaign_data.get_current_day().day
+	var _selected_day: CalendaricDay = CampaignManager.campaign_data.get_selected_day().day
 	if _current_day.equals(_selected_day):
-		if CampaignManager.campaign_data.is_after_main_activity:
+		if CampaignManager.campaign_data.calendar_data.is_after_main_activity:
 			proceed_btn.text = "Next Day"
 			proceed_btn.pressed.connect(CampaignManager.next_day)
 		else:
@@ -100,12 +100,12 @@ func _decide_proceed_button_behaviour() -> void:
 		
 func _decide_manage_button_behaviour() -> void:
 	UIUtils.reset_button_connections(manage_btn)
-	var _current_day: CalendaricDay = CampaignManager.campaign_data.current_day
-	var _selected_day: CalendaricDay = CampaignManager.campaign_data.selected_day	
+	var _current_day: CalendaricDay = CampaignManager.campaign_data.get_current_day().day
+	var _selected_day: CalendaricDay = CampaignManager.campaign_data.get_selected_day().day
 	manage_btn.text = "Manage"
 	# TOIDO: implement button management
 	manage_btn.pressed.connect(func(): print("TODO: Manage!!!"))
-	manage_btn.disabled = _selected_day.is_before(_current_day) or (_selected_day.equals(_current_day) and CampaignManager.campaign_data.is_after_main_activity)
+	manage_btn.disabled = _selected_day.is_before(_current_day) or (_selected_day.equals(_current_day) and CampaignManager.campaign_data.calendar_data.is_after_main_activity)
 
 func _styling_components() -> void:
 	_styling_date_picker_panel()

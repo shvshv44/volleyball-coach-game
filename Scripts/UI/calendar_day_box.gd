@@ -74,8 +74,8 @@ func update_box_colors() -> void:
 		
 func player_selected_day():
 	if not is_selected:
-		var year_num: int = CampaignManager.campaign_data.current_shown_year_num
-		var month_num: int = CampaignManager.campaign_data.current_shown_month_num
+		var year_num: int = CampaignManager.campaign_data.calendar_data.current_shown_year_num
+		var month_num: int = CampaignManager.campaign_data.calendar_data.current_shown_month_num
 		CampaignManager.select_day(year_num, month_num, day_num)
 
 func _init_button() -> void:
